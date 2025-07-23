@@ -2,9 +2,9 @@ name: Build
 
 on:
   pull_request:
-    branches: ['main']
+    branches: ['main', 'alauda-v*']
   push:
-    branches: [ main ]
+    branches: ['main', 'alauda-v*']
   schedule:
     - cron: '0 0 * * *'
 
