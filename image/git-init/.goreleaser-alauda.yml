@@ -11,7 +11,7 @@ version: 2
 before:
   hooks:
     # You may remove this if you don't use go modules.
-    - cd image/git-init && go mod tidy && cd -
+    - go -C image/git-init mod tidy
 
 builds:
   - id: git-init
