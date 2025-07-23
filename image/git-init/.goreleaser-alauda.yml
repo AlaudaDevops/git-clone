@@ -15,6 +15,7 @@ before:
 
 builds:
   - id: git-init
+    dir: image/git-init
     env:
       - CGO_ENABLED=0
       - GODEBUG="http2server=0"
@@ -30,7 +31,7 @@ builds:
       - -trimpath
     tags:
       - disable_gcp
-    main: ./image/git-init
+    main: .
     binary: alauda-git-init
 
 archives:
