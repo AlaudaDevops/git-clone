@@ -185,7 +185,7 @@ func Fetch(logger *zap.SugaredLogger, spec FetchSpec) error {
 		return fmt.Errorf("error parsing %s after fetching refspec %s", checkoutParam, spec.Refspec)
 	}
 
-	if _, err := run(logger, "", "checkout", "-f", checkoutParam); err != nil {
+	if _, err := run(logger, "", "checkout", "-f", checkoutParam, "--"); err != nil {
 		return err
 	}
 
@@ -208,7 +208,7 @@ func Fetch(logger *zap.SugaredLogger, spec FetchSpec) error {
 
 // ShowCommit calls "git show ..." to get the commit SHA for the given revision
 func ShowCommit(logger *zap.SugaredLogger, revision, path string) (string, error) {
-	output, err := run(logger, path, "show", "-q", "--pretty=format:%H", revision)
+	output, err := run(logger, path, "show", "-q", "--pretty=format:%H", revision, "--")
 	if err != nil {
 		return "", err
 	}
@@ -216,7 +216,7 @@ func ShowCommit(logger *zap.SugaredLogger, revision, path string) (string, error
 }
 
 func showRef(logger *zap.SugaredLogger, revision, path string) (string, error) {
-	output, err := run(logger, path, "show", "-q", "--pretty=format:%D", revision)
+	output, err := run(logger, path, "show", "-q", "--pretty=format:%D", revision, "--")
 	if err != nil {
 		return "", err
 	}
