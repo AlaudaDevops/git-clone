@@ -5,7 +5,7 @@ go 1.26.2
 require (
 	github.com/google/go-cmp v0.7.0
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/tektoncd/pipeline v1.0.1
+	github.com/tektoncd/pipeline v1.0.3
 	go.uber.org/zap v1.27.0
 )
 
@@ -81,3 +81,6 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.5.0 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
+
+// Replace with the forked version to avoid false positives for CVE-2026-40161 CVE-2026-40938 CVE-2026-25542 CVE-2026-40923 CVE-2026-40924 that have been fixed.
+replace github.com/tektoncd/pipeline => github.com/AlaudaDevops/pipeline v1.0.3-alauda.1

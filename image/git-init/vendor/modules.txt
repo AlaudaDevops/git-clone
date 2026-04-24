@@ -182,7 +182,7 @@ github.com/prometheus/statsd_exporter/pkg/mapper/fsm
 # github.com/stoewer/go-strcase v1.3.0
 ## explicit; go 1.11
 github.com/stoewer/go-strcase
-# github.com/tektoncd/pipeline v1.0.1
+# github.com/tektoncd/pipeline v1.0.3 => github.com/AlaudaDevops/pipeline v1.0.3-alauda.1
 ## explicit; go 1.24.0
 github.com/tektoncd/pipeline/internal/artifactref
 github.com/tektoncd/pipeline/pkg/apis/config
@@ -547,3 +547,4 @@ sigs.k8s.io/structured-merge-diff/v4/value
 ## explicit; go 1.12
 sigs.k8s.io/yaml
 sigs.k8s.io/yaml/goyaml.v2
+# github.com/tektoncd/pipeline => github.com/AlaudaDevops/pipeline v1.0.3-alauda.1
