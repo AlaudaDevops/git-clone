@@ -1,0 +1,45 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: tektoncd-tools-git-clone
+  title: Tektoncd Tools - git-clone
+  description: git-clone 是 Tekton 官方 catalog 中的核心任务，提供 git-init 镜像，用于在流水线中克隆代码仓库。Alauda fork 在上游基础上添加了私有仓库认证和离线场景的支持。
+  tags:
+    - tool
+    - git
+    - open-source-fork
+  links:
+    - url: https://github.com/AlaudaDevops/git-clone
+      title: GitHub Repository
+      icon: github
+    - url: https://build-sonar.alauda.cn/dashboard?id=github.com-AlaudaDevops-git-clone
+      title: SonarQube
+      icon: dashboard
+    - url: https://github.com/tektoncd/catalog
+      title: Upstream Repository
+      icon: github
+  annotations:
+    # github plugin
+    github.com/project-slug: AlaudaDevops/git-clone
+    # sonarqube plugin
+    sonarqube.org/project-key: github.com-AlaudaDevops-git-clone
+    # 开源组件代码仓库地址，格式：${url}/${project}/${repo}
+    acp.cpaas.io/open-source-component-repo: https://github.com/tektoncd/catalog
+    # 开源组件的版本信息，只适用于开源组件，自研组件默认不收集版本信息,格式 ${version}
+    acp.cpaas.io/open-source-component-version: v1.1.1
+    # 开源组件的license信息,格式 ${license}
+    acp.cpaas.io/open-source-component-license: Apache
+    # 开源组件的license地址,格式 ${url}/${project}/${repo}/${license-path}
+    acp.cpaas.io/open-source-component-license_url: https://github.com/tektoncd/catalog/blob/main/LICENSE
+    # backstage techdocs plugin
+    backstage.io/techdocs-ref: dir:../
+    acp.cpaas.io/owner: qingliu@alauda.io
+
+    # 组件属性，区别是否部署时必带的核心组件,可选值为 core 和 plugin。
+    acp.cpaas.io/functional-attributes: plugin
+
+spec:
+  type: service
+  system: system:alauda-devops-system
+  lifecycle: production
+  owner: devops
