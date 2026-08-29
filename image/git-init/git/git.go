@@ -69,6 +69,7 @@ type FetchSpec struct {
 	HTTPSProxy                string
 	NOProxy                   string
 	SparseCheckoutDirectories string
+	LFS                       bool
 }
 
 // Fetch fetches the specified git repository at the revision into path, using the refspec to fetch if provided.
@@ -203,6 +204,14 @@ func Fetch(logger *zap.SugaredLogger, spec FetchSpec) error {
 			return err
 		}
 	}
+	// Pull Git LFS objects last, after the working tree (and any submodules)
+	// are checked out, so the LFS-tracked files are materialised into real
+	// content instead of being left as LFS pointer files.
+	if spec.LFS {
+		if err := lfsFetch(logger, spec); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -237,6 +246,34 @@ func submoduleFetch(logger *zap.SugaredLogger, spec FetchSpec) error {
 		return err
 	}
 	logger.Infof("Successfully initialized and updated submodules in path %s", spec.Path)
+	return nil
+}
+
+// lfsFetch downloads Git LFS objects for the checked-out revision and replaces
+// the LFS pointer files in the working tree with their real content. It runs
+// after the normal checkout so the repository, remote (origin) and credentials
+// configured by Fetch are reused verbatim — LFS traffic goes to the same remote
+// with the same auth and proxy settings. Requires the git-lfs binary to be
+// present in the image; when absent the underlying git command fails loudly
+// instead of silently leaving pointer files behind.
+func lfsFetch(logger *zap.SugaredLogger, spec FetchSpec) error {
+	if spec.Path != "" {
+		if err := os.Chdir(spec.Path); err != nil {
+			return fmt.Errorf("failed to change directory with path %s; err: %w", spec.Path, err)
+		}
+	}
+	// Install the LFS smudge/process filters into this repository's local git
+	// config only (never --global / --system): the checkout is ephemeral and
+	// runs as a non-root user, so per-repo scope is both sufficient and safe.
+	if _, err := run(logger, "", "lfs", "install", "--local"); err != nil {
+		return fmt.Errorf("failed to install git-lfs (is the git-lfs binary available in the image?): %w", err)
+	}
+	// Fetch all LFS objects referenced by the current checkout and smudge them
+	// into the working tree.
+	if _, err := run(logger, "", "lfs", "pull"); err != nil {
+		return fmt.Errorf("failed to pull git-lfs objects: %w", err)
+	}
+	logger.Infof("Successfully pulled git-lfs objects in path %s", spec.Path)
 	return nil
 }
 

@@ -37,6 +37,7 @@ func init() {
 	flag.BoolVar(&fetchSpec.SSLVerify, "sslVerify", true, "Enable/Disable SSL verification in the git config")
 	flag.BoolVar(&fetchSpec.Submodules, "submodules", true, "Initialize and fetch Git submodules")
 	flag.UintVar(&fetchSpec.Depth, "depth", 1, "Perform a shallow clone to this depth")
+	flag.BoolVar(&fetchSpec.LFS, "lfs", false, "Pull Git LFS objects after checkout (requires git-lfs in the image)")
 	flag.StringVar(&terminationMessagePath, "terminationMessagePath", "/tekton/termination", "Location of file containing termination message")
 	flag.StringVar(&fetchSpec.SparseCheckoutDirectories, "sparseCheckoutDirectories", "", "String of directory patterns separated by a comma")
 }
